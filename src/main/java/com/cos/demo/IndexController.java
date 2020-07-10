@@ -67,12 +67,12 @@ public class IndexController {
 	// jackson 바인더가 먼저 발동함. 아래 메서드 시작 직전에)
 	// @RequestBody를 안 붙이면 아래에서 null값만 출력됨
 	// jackson 바인더는 요청과 응답시에 각각 발동한다.
-	/*
+	/* postman으로 아래 내용을 post 방식으로 보냄 http://localhost:8080/demo/json/model
 	 {
 		"username":"ssar",
 		"password":"1234",
 		"email":"cos@nate.com"
-	} 
+	 } 
 	 */
 	@PostMapping("/json/model")	
 	public @ResponseBody User jsonModel(@RequestBody User user) {
