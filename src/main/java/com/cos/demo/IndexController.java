@@ -18,6 +18,8 @@ public class IndexController {
 
 
 	// http://localhost:8080/demo
+	// 근데 실제 실행해 보면 아래 맵핑은 http://localhost:8080 에 대응하지
+	// http://localhost:8080/demo 에는 404(Page Not Found) 에러 뜬다!
 	@GetMapping({"","/"})	// demo/, demo 둘다에 대응
 	public @ResponseBody String index() {
 		System.out.println(t.num);
@@ -26,6 +28,8 @@ public class IndexController {
 	}
 	
 	// x-www-form-urlencoded 타입 => key=value
+	// Postman으로 아래 url로 post
+	// http://localhost:8080/form?username=kim&password=1234&email=kim@nate.com
 	@PostMapping("/form")	
 	public @ResponseBody String user(String username, String password, String email) {
 		System.out.println(username);
@@ -53,13 +57,13 @@ public class IndexController {
 	// 즉, 보내는 측에서는 username=kim&password=1234&email=kim@nate.com 으로 보내는 경우에
 	// 아래와 같이 User 객체가 만들어져서 처리가 되는 것!
 	@GetMapping("/form/model")	
-	public @ResponseBody String formModelGet(User user) {
+	public @ResponseBody User formModelGet(User user) {
 		System.out.println(user.getUsername());
 		System.out.println(user.getPassword());
 		System.out.println(user.getEmail());
 
-		return "Form";	// ViewResolver
-	}
+		return user;	// {"username":"kim","password":"1234","email":"kim@nate.com"}
+	}					// jackson 라이브러리가 개입하여 JSON 객체로 응답함
 	
 	
 	// json => {"key":값}	: get방식으로 주고받을 수는 없음. post 방식으로 body에 넣어 보내야
@@ -67,7 +71,7 @@ public class IndexController {
 	// jackson 바인더가 먼저 발동함. 아래 메서드 시작 직전에)
 	// @RequestBody를 안 붙이면 아래에서 null값만 출력됨
 	// jackson 바인더는 요청과 응답시에 각각 발동한다.
-	/* postman으로 아래 내용을 post 방식으로 보냄 http://localhost:8080/demo/json/model
+	/* postman으로 아래 내용을 post 방식으로 보냄 http://localhost:8080/json/model
 	 {
 		"username":"ssar",
 		"password":"1234",
@@ -79,6 +83,9 @@ public class IndexController {
 		System.out.println(user.getUsername());
 		System.out.println(user.getPassword());
 		System.out.println(user.getEmail());
+		
+		// 받아온 username 앞에 "Mr. "를 붙여 돌려주도록
+		user.setUsername("Mr. " + user.getUsername());
 
 		return user;	// ViewResolver 작동막음 => Jackson 작동
 						// 응답시 기본설정은 뷰리졸버가 작동하는 것
