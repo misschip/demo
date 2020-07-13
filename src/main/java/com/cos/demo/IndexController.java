@@ -16,6 +16,13 @@ public class IndexController {
 	@Autowired
 	Test t;
 
+	
+	// http://localhost:8000/demo/index 로 접속
+	@GetMapping("/index")
+	public String home() {
+		return "index";
+	}
+	
 
 	// http://localhost:8080/demo
 	// 근데 실제 실행해 보면 아래 맵핑은 http://localhost:8080 에 대응하지

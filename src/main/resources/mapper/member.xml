@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cos.demo.repository.MemberRepository">
+  
+  <select id="findById" resultType="com.cos.demo.model.Member">
+    select * from Member where id = #{id}
+  </select>
+  
+   <select id="findAll" resultType="com.cos.demo.model.Member"> <!-- List<Member> 타입인 경우에도 그냥 왼쪽과 같이 하면 됨 -->
+    select * from Member
+  </select>
+  
+</mapper>
+
+<!-- 이 내용의 출처는 https://mybatis.org/mybatis-3/getting-started.html -->
+<!-- 받아와서 약간 수정한 것! -->
