@@ -17,12 +17,14 @@ public class MyBatisController {
 	@Autowired
 	private MemberRepository memberRepository;
 	
+	// http://localhost:8000/demo/member/2
 	@GetMapping("/member/{id}")
 	public @ResponseBody Member findById(@PathVariable int id) {
 		Member member = memberRepository.findById(id);
 		return member;
 	}
 	
+	// http://localhost:8000/demo/member
 	@GetMapping("/member")
 	public @ResponseBody List<Member> findAll() {
 		List<Member> members = memberRepository.findAll();
