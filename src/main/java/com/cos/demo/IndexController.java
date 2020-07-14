@@ -18,25 +18,35 @@ public class IndexController {
 
 	
 	// http://localhost:8000/demo/index 로 접속
+	// [application.yml 파일 설정] 관련됨.
+	//  1. port: 8000
+	//  2. context-path: /demo 로 설정하고 있기 때문임
+	//
+	// @ResponseBody가 없으므로 return "index"는 "index"라는 문자열을 응답으로 보내는게 아니라
+	// /WEB-INF/views/index.jsp 로 view resolve된다.
+	// spring.mvc.view.prefix, spring.mvc.view.suffix 값도 application.yml에 설정됨
 	@GetMapping("/index")
 	public String home() {
 		return "index";
 	}
 	
 
+
 	// http://localhost:8080/demo
-	// 근데 실제 실행해 보면 아래 맵핑은 http://localhost:8080 에 대응하지
-	// http://localhost:8080/demo 에는 404(Page Not Found) 에러 뜬다!
+	// application.yml에 context-path: /demo 로 설정하고 있기 때문에
+	// /가 /demo가 되는 것
 	@GetMapping({"","/"})	// demo/, demo 둘다에 대응
 	public @ResponseBody String index() {
 		System.out.println(t.num);
 
-		return "Hello";	// ViewResolver
-	}
+		return "Hello";	// @ResponseBody가 붙었으므로 view resolver가 작동하지 않고
+	}					// "Hello"라는 문자열이 response의 body에 담겨 클라이언트로 보내진다.
 	
 	// x-www-form-urlencoded 타입 => key=value
 	// Postman으로 아래 url로 post
-	// http://localhost:8080/form?username=kim&password=1234&email=kim@nate.com
+	// http://localhost:8000/demo/form (o)
+	// http://localhost:8080/form (x)
+	// body에 key,value로 username=kim&password=1234&email=kim@nate.com
 	@PostMapping("/form")	
 	public @ResponseBody String user(String username, String password, String email) {
 		System.out.println(username);
