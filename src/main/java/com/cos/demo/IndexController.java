@@ -45,7 +45,7 @@ public class IndexController {
 	// x-www-form-urlencoded 타입 => key=value
 	// Postman으로 아래 url로 post
 	// http://localhost:8000/demo/form (o)
-	// http://localhost:8080/form (x)
+	// http://localhost:8080/form (x)		// contexct-path가 /demo 이므로!
 	// body에 key,value로 username=kim&password=1234&email=kim@nate.com
 	@PostMapping("/form")	
 	public @ResponseBody String user(String username, String password, String email) {
@@ -53,12 +53,12 @@ public class IndexController {
 		System.out.println(password);
 		System.out.println(email);
 
-		return "Form";	// ViewResolver
-	}
+		return "Form";	// @ResponseBody가 붙어 있기 때문에 View Resolver가 작동하지 않고
+	}					// "Form" 문자열이 그대로 클라이언트로 반환됨
 	
 	
 	// Mime 타입이 x-www-form-urlencoded인 경우 아래처럼 받을 수 있게 된다.
-	// 즉, 보내는 측에서는 username=kim&password=1234&email=kim@nate.com 으로 보내는 경우에
+	// 즉, 보내는 측에서는 body에 username=kim&password=1234&email=kim@nate.com 를 담아 보내는 경우에
 	// 아래와 같이 User 객체가 만들어져서 처리가 되는 것!
 	@PostMapping("/form/model")	
 	public @ResponseBody String formModel(User user) {
@@ -66,13 +66,14 @@ public class IndexController {
 		System.out.println(user.getPassword());
 		System.out.println(user.getEmail());
 
-		return "Form";	// ViewResolver
+		return "Form";	// @ResponseBody => 문자열 그대로 반환
 	}
 	
 	
-	// Mime 타입이 x-www-form-urlencoded인 경우 아래처럼 받을 수 있게 된다.
-	// 즉, 보내는 측에서는 username=kim&password=1234&email=kim@nate.com 으로 보내는 경우에
-	// 아래와 같이 User 객체가 만들어져서 처리가 되는 것!
+	
+	// \보내는 측에서는 http://localhost:8000/demo/form/model?username=kim&password=1234&email=kim@nate.com 으로 보내는 경우에
+	// 아래와 같이 User 객체가 만들어져서 클라이언트로 반환! @ResponseBody가 있어서 view resolver가 작동 않고
+	// response body에 리턴값을 담아 반환. 이때 jackson 라이브러리 발동하여 JSON 타입으로 변환 후 반환. user.toString() 아님에 주의!
 	@GetMapping("/form/model")	
 	public @ResponseBody User formModelGet(User user) {
 		System.out.println(user.getUsername());
@@ -88,7 +89,7 @@ public class IndexController {
 	// jackson 바인더가 먼저 발동함. 아래 메서드 시작 직전에)
 	// @RequestBody를 안 붙이면 아래에서 null값만 출력됨
 	// jackson 바인더는 요청과 응답시에 각각 발동한다.
-	/* postman으로 아래 내용을 post 방식으로 보냄 http://localhost:8080/json/model
+	/* postman으로 아래 내용을 post 방식으로 보냄 http://localhost:8000/demo/json/model
 	 {
 		"username":"ssar",
 		"password":"1234",
@@ -104,8 +105,8 @@ public class IndexController {
 		// 받아온 username 앞에 "Mr. "를 붙여 돌려주도록
 		user.setUsername("Mr. " + user.getUsername());
 
-		return user;	// ViewResolver 작동막음 => Jackson 작동
-						// 응답시 기본설정은 뷰리졸버가 작동하는 것
+		return user;	// @ResponseBody가 ViewResolver 작동막음 => Jackson 작동
+						// JSON 타입으로 반환
 	}
 }
 

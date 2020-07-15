@@ -22,12 +22,12 @@ public class MyBatisController {
 	public @ResponseBody Member findById(@PathVariable int id) {
 		Member member = memberRepository.findById(id);
 		return member;
-	}
+	}						// @ResponseBody 발동으로 member 정보가 JSON 타입 문자열로 반환
 	
 	// http://localhost:8000/demo/member
 	@GetMapping("/member")
 	public @ResponseBody List<Member> findAll() {
 		List<Member> members = memberRepository.findAll();
 		return members;
-	}
+	}						// @ResponseBody 발동으로 member 정보가 JSON 타입 문자열로 반환
 }

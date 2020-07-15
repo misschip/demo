@@ -18,3 +18,6 @@ insert into member(username,phone) values("ssar","01022223333");
 insert into member(username,phone) values("ssarmango","01099998888");
 insert into member(username,phone) values("kim","01055556666");
 ````
+
+## mybatis-spring-boot
+https://mybatis.org/spring-boot-starter/
